@@ -1,0 +1,92 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+/* layout */
+ul{
+    list-style-type: none;
+}
+
+.display-calculator{
+    display: flex;
+    align-items: center;
+
+    margin: 25px 20px;
+    padding: 10px;
+    border-radius: 10px;
+    flex-grow: 1;
+}
+
+.numbers button{
+    margin:16px;
+    width: 100px;
+    height: 120px;
+    flex-grow: 1;
+}
+
+.operators button{
+    margin:16px;
+    width: 100px;
+    flex-grow: 1;
+}
+
+.container, .calculator-container,.buttons,.numbers, .operators{
+    display: flex;
+}
+
+.container{
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.calculator-container{
+    flex-flow: column;
+    height: 800px;
+    width: 600px;
+    padding: 20px;
+}
+
+.numbers{
+    flex-flow: row wrap;
+}
+
+.operators{
+    flex-flow: column;
+}
+
+p{
+    padding: 20px;
+}
+/* styles */
+.calculator-container{
+    background-color: rgb(43, 43, 43);
+    border-radius: 10px;
+}
+
+.display-calculator{
+    background-color: rgb(151, 187, 136);
+}
+p,button{
+    font-family: 'Courier New', Courier, monospace;
+    font-weight:bold;
+}
+button{
+    border-radius: 10px;
+    background-color: rgb(234, 234, 234);
+    font-size: 45px;
+    border: 3px solid rgb(170, 46, 147);
+}
+
+p{
+    font-size: 50px;
+    color: rgb(83, 82, 82);
+}
+
+/* animation */
+
+button:hover{
+    background-color: rgb(143, 37, 143);
+    border: 3px solid rgb(255, 255, 255);
+    color: white;
+}
