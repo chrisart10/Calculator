@@ -1,46 +1,43 @@
 const buttons = document.querySelectorAll('button');
 const display = document.querySelector('p');
 
-let acomulator = '';
+let typedNumber = '';
 let result = 0;
 let resultString = '';
 let operandsArray = [];
 let lastOperator = '';
+let lastOperand = 0;
 
 buttons.forEach(button => {
     button.addEventListener('click', event => {
 
         if (event.target.textContent === 'AC') {
-            display.textContent = '';
-            acomulator = '';
-            operandsArray = [];
-            lastOperator = '';
+            resetCalculator();
         } else if (event.target.classList.contains('number-button')) {
-            acomulator += event.target.textContent;
-            display.textContent = cropString(acomulator);
-        } else if (event.target.classList.contains('operator-button') && acomulator !== '') {
-            // FIXME No se cambia la operacion al ingresar otro signo. 
+            typedNumber += event.target.textContent;
+            lastOperand = Number(typedNumber);
+            display.textContent = cropString(typedNumber);
+        } else if (event.target.classList.contains('operator-button')) {
 
-            operandsArray.push(Number(acomulator));
+            operandsArray.push(lastOperand);
             operandsArray = calculte(operandsArray[0], operandsArray[1], event.target.textContent);
 
-            acomulator = '';
+            typedNumber = '';
+
             resultString = String(operandsArray[0]);
-            //
-            display.textContent = cropString(resultString) ;
+
+            display.textContent = cropString(resultString);;
             result = operandsArray[0];
+            lastOperand = result;
         }
+
         if (event.target.textContent === "=") {
-            //[x] Agregar resultado
+            resetCalculator(deleteResult = false);
             display.textContent = cropString(resultString);
 
-            // Guarda el resultado en el acomulador para que pueda realizar la siguiente operacion en base al resultado.
-            acomulator = resultString;
-
-            operandsArray = [];
-            lastOperator = '';
+            //Se necesita almacenar el resultado en el acomulador para que pueda realizar la siguiente operacion en base al resultado.
+            typedNumber = resultString;
         }
-        console.log(operandsArray);
     });
 });
 
@@ -58,7 +55,7 @@ function calculte(operandA, operandB, currentOperator) {
 
     if (operandA == undefined) return [];
     if (operandB == undefined) {
-        //  Guarda el ultimo operador para que recuerde que operacion debe hacerse.
+        // se necesita almacenar el ultimo operador cuando no existe operandB para que recuerde que operacion debe hacerse.
         lastOperator = currentOperator;
         return [operandA];
     }
@@ -74,15 +71,33 @@ function calculte(operandA, operandB, currentOperator) {
         return calculte(operandA, operandB, lastOperator);
     }
 
-    //  Guarda el ultimo operador para que recuerde que operacion debe hacerse.
+    // se necesita almacenar el ultimo operador para que recuerde que operacion debe hacerse.
     lastOperator = currentOperator;
 
     return newOperandsArray;
 }
-function cropString(string){
-    string = (string.length > 17) ? string.substring(0, 17) : string
-    return string
+
+function resetCalculator(deleteResult = true) {
+    if (deleteResult) {
+        resultString = '';
+        lastOperand = 0;
+    }
+    display.textContent = '';
+    typedNumber = '';
+    operandsArray = [];
+    lastOperator = '';
 }
+
+function cropString(string) {
+    stringCroped = (string.length > 17) ? string.substring(0, 17) : string;
+    string = detectError(stringCroped);
+    return string;
+}
+function detectError(string) {
+    if (string === 'Infinity' || string === 'NaN') return "bruh";
+    return string;
+}
+
 function add(operandA, operandB) {
     return operandA + operandB;
 }
